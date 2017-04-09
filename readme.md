@@ -1,17 +1,15 @@
-# LaracogsInstaller
+# Quarx Installer
 
-A simple CLI tool for starting apps with the Laracogs Starter kit!
+A simple CLI tool for making sites with Quarx!
 
 ## Installation
 
-> Installation has only been tested on macOS
-
 ```
-composer global require yab/laracogs-installer
+composer global require yab/quarx-installer
 ```
 
 ## Commands
 
-### laracogs install {APP_NAME}
-
-This command will generate a new Laravel application using the `laravel_rapid_prototype` as its boilerplate. The app name will set the directory, and the app will be prepared.
+```
+quarx install {APP_NAME}
+```

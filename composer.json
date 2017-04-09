@@ -1,6 +1,6 @@
 {
-    "name": "yab/laracogs-installer",
-    "description": "A CLI tool for generating laracogs apps",
+    "name": "yab/quarx-installer",
+    "description": "A CLI tool for generating quarx sites",
     "keywords": ["App Builder"],
     "license": "MIT",
     "type": "project",
