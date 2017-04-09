@@ -62,8 +62,8 @@ class InstallService
             $this->fileSystem->deleteDirectory($this->directory.'/.git');
             $this->composerInstall();
             $this->setEnvFile();
+            $this->updateTheReadMe();
             $this->runKeyGenerator();
-            $this->makeDatabase();
         }
     }
 
@@ -100,7 +100,7 @@ class InstallService
     public function setEnvFile()
     {
         $env = file_get_contents($this->directory.'/.env.example');
-        $env = str_replace('APP_NAME=', 'APP_NAME='.$this->app_name, $env);
+        $env = str_replace('APP_NAME=Quarx', 'APP_NAME='.$this->app_name, $env);
         file_put_contents($this->directory.'/.env', $env);
     }
 
@@ -110,7 +110,7 @@ class InstallService
     public function updateTheReadMe()
     {
         $content = "#".$this->app_name."\n\nYour app's readme!";
-        file_put_contents($this->directory.'/.readme.md', $content);
+        file_put_contents($this->directory.'/readme.md', $content);
     }
 
     /**
