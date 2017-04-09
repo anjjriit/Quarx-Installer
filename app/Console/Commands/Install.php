@@ -12,14 +12,14 @@ class Install extends Command
      *
      * @var string
      */
-    protected $signature = 'install {name}';
+    protected $signature = 'app:install {name}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Create a starter app with Laracogs';
+    protected $description = 'Create a starter app with Quarx';
 
     /**
      * Construct.
@@ -51,8 +51,8 @@ class Install extends Command
                 $this->info('php artisan migrate --seed');
                 $this->info('php artisan serve');
                 $this->comment('Then you can login with:');
-                $this->info('cloudappsteam+'.$name.'@gmail.com');
-                $this->info('d3U9JgkWRH*Gq');
+                $this->info('admin@admin.com');
+                $this->info('admin');
             } else {
                 $this->comment('Please install the following:');
                 $this->line('PHP >= v5.6.4');

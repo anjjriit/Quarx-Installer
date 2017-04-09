@@ -11,5 +11,5 @@ composer global require yab/quarx-installer
 ## Commands
 
 ```
-quarx install {APP_NAME}
+quarx app:install {APP_NAME}
 ```
