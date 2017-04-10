@@ -11,5 +11,7 @@ composer global require yab/quarx-installer
 ## Commands
 
 ```
-quarx app:install {APP_NAME}
+quarx new {APP_NAME} {--ip=}
 ```
+
+The IP for your homestead or dev environment.

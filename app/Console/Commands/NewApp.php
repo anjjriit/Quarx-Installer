@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Console\Commands;
+namespace QuarxInstaller\Console\Commands;
 
-use App\Services\InstallService;
+use QuarxInstaller\Services\NewAppService;
 use Illuminate\Console\Command;
 
-class Install extends Command
+class NewApp extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'app:install {name}';
+    protected $signature = 'new {name} {--ip=}';
 
     /**
      * The console command description.
@@ -24,9 +24,9 @@ class Install extends Command
     /**
      * Construct.
      *
-     * @param InstallService $service
+     * @param QuarxInstaller $service
      */
-    public function __construct(InstallService $service)
+    public function __construct(NewAppService $service)
     {
         parent::__construct();
         $this->service = $service;
@@ -40,17 +40,15 @@ class Install extends Command
     public function handle()
     {
         $name = $this->argument('name');
+        $ip = $this->option('ip');
 
         try {
             if ($this->confirm('Do you currently have PHP v5.6.4 or greater installed? Along with Composer and MySQL or SQLite?')) {
-                $this->service->handle($name);
+                $this->service->handle($name, $ip);
                 $this->info($name.' has been created.');
                 $this->comment('You can now change to the following directory:');
                 $this->info(getcwd().'/'.$name);
-                $this->comment('And then run:');
-                $this->info('php artisan migrate --seed');
-                $this->info('php artisan serve');
-                $this->comment('Then you can login with:');
+                $this->comment('And in your app you can log in with:');
                 $this->info('admin@admin.com');
                 $this->info('admin');
             } else {

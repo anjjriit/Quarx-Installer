@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Providers;
+namespace QuarxInstaller\Providers;
 
 use Illuminate\Support\ServiceProvider;
 

@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__.'/../../../../vendor/autoload.php';
+require_once __DIR__.'/../vendor/autoload.php';
 
 try {
     (new Dotenv\Dotenv(__DIR__.'/../'))->load();
@@ -37,12 +37,12 @@ $app->withFacades();
 
 $app->singleton(
     Illuminate\Contracts\Debug\ExceptionHandler::class,
-    App\Exceptions\Handler::class
+    QuarxInstaller\Exceptions\Handler::class
 );
 
 $app->singleton(
     Illuminate\Contracts\Console\Kernel::class,
-    App\Console\Kernel::class
+    QuarxInstaller\Console\Kernel::class
 );
 
 /*
@@ -56,6 +56,6 @@ $app->singleton(
 |
 */
 
-$app->register(App\Providers\AppServiceProvider::class);
+$app->register(QuarxInstaller\Providers\AppServiceProvider::class);
 
 return $app;
