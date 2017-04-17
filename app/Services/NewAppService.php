@@ -124,8 +124,8 @@ class NewAppService
      */
     public function startQuarx()
     {
-        passthru('php '.$this->directory.'/artisan quarx:setup');
-        passthru('php '.$this->directory.'/artisan config:clear');
+        passthru('cd '.$this->directory.' && php artisan quarx:setup');
+        passthru('cd '.$this->directory.' && php artisan config:clear');
     }
 
     /**
@@ -139,10 +139,10 @@ class NewAppService
 
     public function envCleanup()
     {
-        $localEnv = file_get_contents('.env');
+        $localEnv = file_get_contents(__DIR__.'/../../.env');
         $localEnv = str_replace('DB_DATABASE='.strtolower($this->app_name), 'DB_DATABASE=homestead', $localEnv);
         $localEnv = str_replace('DB_HOST='.$this->ip, 'DB_HOST=127.0.0.1', $localEnv);
-        file_put_contents('.env', $localEnv);
+        file_put_contents(__DIR__.'/../../.env', $localEnv);
     }
 
     /**
@@ -156,10 +156,10 @@ class NewAppService
         file_put_contents($this->directory.'/.env', $env);
         passthru('composer dump -d='.$this->directory);
 
-        $localEnv = file_get_contents('.env');
+        $localEnv = file_get_contents(__DIR__.'/../../.env');
         $localEnv = str_replace('DB_DATABASE=homestead', 'DB_DATABASE='.strtolower($this->app_name), $localEnv);
         $localEnv = str_replace('DB_HOST=127.0.0.1', 'DB_HOST='.$this->ip, $localEnv);
-        file_put_contents('.env', $localEnv);
+        file_put_contents(__DIR__.'/../../.env', $localEnv);
 
         passthru('php '.$this->directory.'/artisan config:cache');
     }
