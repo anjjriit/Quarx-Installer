@@ -1,34 +1,29 @@
 {
     "name": "yab/quarx-installer",
     "description": "A CLI tool for generating quarx sites",
-    "keywords": ["App Builder"],
     "license": "MIT",
-    "type": "project",
+    "authors": [
+        {
+            "name": "Matt Lantz",
+            "email": "matt@yabhq.com"
+        }
+    ],
     "require": {
-        "php": ">=5.6.4",
-        "laravel/lumen-framework": "5.4.*",
-        "vlucas/phpdotenv": "~2.2",
+        "symfony/console": "^3.0",
+        "symfony/yaml": "^3.0",
+        "symfony/filesystem": "^3.2",
         "yab/laracogs": "^2.2"
     },
     "require-dev": {
-        "fzaninotto/faker": "~1.4",
-        "phpunit/phpunit": "~5.7",
-        "mockery/mockery": "~0.9"
     },
     "autoload": {
         "psr-4": {
-            "QuarxInstaller\\": "app/"
+            "Yab\\QuarxInstaller\\": "src/"
         }
     },
-    "autoload-dev": {},
     "bin": [
         "quarx"
     ],
-    "scripts": {
-        "post-root-package-install": [
-            "php -r \"copy('.env.example', '.env');\""
-        ]
-    },
     "minimum-stability": "dev",
     "prefer-stable": true
 }

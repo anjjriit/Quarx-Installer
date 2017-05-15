@@ -1,45 +1,35 @@
 <?php
 
-namespace QuarxInstaller\Services;
+namespace Yab\QuarxInstaller\Commands;
 
-use Illuminate\Filesystem\Filesystem;
+use Symfony\Component\Yaml\Parser;
+use Symfony\Component\Yaml\Dumper;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
-class NewAppService
+class MakeCommand extends Command
 {
-    /**
-     * Directory for app.
-     *
-     * @var string
-     */
-    protected $directory;
-
-    /**
-     * Name for app.
-     *
-     * @var string
-     */
-    protected $app_name;
-
-    /**
-     * Constructor.
-     *
-     * @param Filesystem $fileSystem
-     */
-    public function __construct(Filesystem $fileSystem)
+    protected function configure()
     {
-        $this->fileSystem = $fileSystem;
+        $this
+            ->setName('new')
+            ->setDescription('Create a new Quarx based project')
+            ->addArgument('name', InputArgument::REQUIRED, 'The name of the project')
+            ->addArgument('ip', InputArgument::OPTIONAL, 'The IP of your database');
     }
 
-    /**
-     * Get the app version.
-     *
-     * @return string
-     */
-    public function handle($name, $ip = null)
+    protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->ip = $ip;
+        $name = $input->getArgument('name');
+
+        $this->ip = $input->getArgument('ip');
         $this->directory = getcwd().'/'.$name;
         $this->app_name = $name;
+        $this->fileSystem = new Filesystem();
 
         if (is_dir(getcwd().'/'.$this->app_name)) {
             throw new \Exception("This $this->app_name directory already exists", 1);
@@ -48,7 +38,9 @@ class NewAppService
         exec('composer create-project laravel/laravel '.$this->directory);
 
         if ($this->setUpApp()) {
-            return true;
+            $output->writeln('<info>Your Quarx is now prepared at: '.$this->directory.'</info>');
+            $output->writeln('<info>If you migrated you\'re good to go, if not you\'ll need to run that.</info>');
+            $output->writeln('<info>You will also have to run: npm install & npm run dev</info>');
         }
 
         return false;
@@ -60,7 +52,7 @@ class NewAppService
     public function setUpApp()
     {
         if ($this->setComposerFile()) {
-            $this->fileSystem->deleteDirectory($this->directory.'/.git');
+            $this->fileSystem->remove($this->directory.'/.git');
             $this->composerInstall();
             $this->setConfig();
             $this->vendorPublish();
@@ -69,6 +61,8 @@ class NewAppService
             $this->updateTheReadMe();
             $this->envCleanup();
         }
+
+        return true;
     }
 
     /**
@@ -82,6 +76,8 @@ class NewAppService
 
         $composer = file_get_contents($this->directory.'/composer.json');
         $composer = str_replace('laravel/laravel', $appNamespace, $composer);
+
+        unlink($this->directory.'/app/User.php');
 
         if (file_put_contents($this->directory.'/composer.json', $composer)) {
             passthru('composer require yab/quarx -d='.$this->directory);
@@ -118,9 +114,8 @@ class NewAppService
         passthru('php '.$this->directory.'/artisan vendor:publish');
     }
 
-
     /**
-     * Vendor publish.
+     * Start Quarx.
      */
     public function startQuarx()
     {
